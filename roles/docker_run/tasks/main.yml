@@ -1,0 +1,12 @@
+---
+# This playbook will run container using customize image
+
+- name: Centos 7 container with ssh and httpd enabled 
+  docker:
+    name: my_centos7
+    image: "{{ registry_name }}/{{ image_name }}:v1"
+    state: started
+    ports:
+    - "8888:80"
+    - "2222:22"
+    tty: yes

@@ -1,0 +1,24 @@
+---
+# This playbook will Build image with ssh and http enabled
+
+- name: Create Directory
+  file: 
+   path: "{{ fs_name }}/{{ dockerfile_path }}"
+   state: directory
+
+- name: Copy Docker file 
+  template:
+        src: Dockerfile.j2
+        dest: "{{ fs_name }}/{{ dockerfile_path }}/Dockerfile"
+ 
+- name: Copy apache startup script
+  template:
+        src: run-httpd.sh.j2
+        dest: "{{ fs_name }}/{{ dockerfile_path }}/run-httpd.sh"
+
+- name : Build an Image using docker file
+  docker_image:
+    path: "{{ fs_name }}/{{ dockerfile_path }}"
+    name: "{{ registry_name }}/{{ image_name }}"
+    tag: v1
+    push: yes

@@ -1,0 +1,19 @@
+---
+# This playbook will install Docker and copy SSL certificate to connect with local repository
+- name: Install EPEL rpm
+  command : rpm -iUvh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+
+- name: Install Docker 
+  yum: 
+    name: docker-io 
+    state=present
+  
+- name: Start Docker service
+  service: 
+       name: docker
+       enabled: yes
+    
+- name: Copy domain.crt
+  template:
+       src: domain.crt.j2
+       dest: "/etc/docker/certs.d/{{ registry_name }}/ca.crt"

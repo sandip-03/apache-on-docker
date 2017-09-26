@@ -1,0 +1,36 @@
+---
+# This playbook will install Docker and copy SSL certificate to connect with local repository on CentOS 7
+
+- name: Add docker-ce repository
+  command: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+
+- name: Install Docker-ce
+  yum: 
+    name: docker-ce
+    state: present
+
+- name: Instal Docker-py
+  yum:
+    name: python-docker-py
+    state: present
+
+- name: Create dicrectory
+  file:
+   path: "/etc/docker/certs.d/{{ registry_name }}"
+   state: directory
+
+- name: Copy daemon.json
+  template:
+       src: daemon.json.j2
+       dest: "/etc/docker/daemon.json"
+
+- name: Start Docker service
+  service: 
+       name: docker
+       state: started
+       enabled: yes
+    
+- name: Copy domain.crt
+  template:
+       src: domain.crt.j2
+       dest: "/etc/docker/certs.d/{{ registry_name }}/ca.crt"
