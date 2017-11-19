@@ -5,7 +5,7 @@ registry_name: "control:5000"
 pv_name: /dev/sdb
 vg_name: vg_test
 lv_name: lv_test
-lv_size: 16
+lv_size: 2048
 fs_name: /test
 dockerfile_path: "docker/centos-ssh-apache"
 image_name: centos-ssh-apache
